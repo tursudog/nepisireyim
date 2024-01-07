@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "186440052923",
+    "firebase_url": "https://nepisireyim.firebaseio.com",
+    "project_id": "nepisireyim",
+    "storage_bucket": "nepisireyim.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186440052923:android:7887f8588187538798399e",
+        "android_client_info": {
+          "package_name": "com.dumbooctopusstudios.ne_pisireyim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186440052923-cimnhlr1ljs57h4j38m0frnm7ib6q49l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA250K0oVBciCpNq6s8KSb72biKgKSnVmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186440052923-cimnhlr1ljs57h4j38m0frnm7ib6q49l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186440052923:android:9bea30ff603906c398399e",
+        "android_client_info": {
+          "package_name": "com.dumbooctopusstudios.nepisireyim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186440052923-5gt3scl3l7tnkl9bv0ndkf3gglo1569i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dumbooctopusstudios.nepisireyim",
+            "certificate_hash": "7d62c3058e9cc674a0b476393d91c00b6e2157fe"
+          }
+        },
+        {
+          "client_id": "186440052923-onln86p3oreib981v0rrs6pdibme3tpm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dumbooctopusstudios.nepisireyim",
+            "certificate_hash": "1af471a8e00cea2012a6b3f700cc5413a7d24d84"
+          }
+        },
+        {
+          "client_id": "186440052923-cimnhlr1ljs57h4j38m0frnm7ib6q49l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA250K0oVBciCpNq6s8KSb72biKgKSnVmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186440052923-cimnhlr1ljs57h4j38m0frnm7ib6q49l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-4915271596252350~4059474139"
+    }
+  ],
+  "configuration_version": "1"
+}
