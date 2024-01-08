@@ -35,7 +35,14 @@ class RecipeCard extends StatelessWidget {
                   } else {
                     return const Center(child: CircularProgressIndicator()); // Show loading indicator
                   }
-                },
+                },errorBuilder: (context, error, stackTrace) {
+                // This is where the magic happens
+                return Image.asset('assets/images/placeholder.png',
+                    width: double.infinity,
+                  height: 140,
+                  fit: BoxFit.cover
+                );
+              },
               ),
             ),
             const SizedBox(height: 3),

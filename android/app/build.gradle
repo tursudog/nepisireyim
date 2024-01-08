@@ -50,6 +50,7 @@ android {
         applicationId "com.dumbooctopusstudios.nepisireyim"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        compileSdkVersion 33
         minSdkVersion 19
         targetSdkVersion 33
         versionCode 6
