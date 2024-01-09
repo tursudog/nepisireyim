@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:nepisireyim/models/menu.dart';
 import 'package:nepisireyim/views/recipe_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -76,21 +77,82 @@ class _MenuPageViewState extends State<MenuPageView> {
       });
     }
     _getMenu();
-
   }
 
   Future<void> _getMenu() async {
-    final menuCollection = FirebaseFirestore.instance
-        .collection('new_menu')
-        .orderBy(FieldPath.documentId);
-    await menuCollection.get().then((querySnapshot) async {
-      for (var doc in querySnapshot.docs) {
-        final recipeId = doc['id']; // Get recipe ID from "menu" document
+
+    Menu? menu = await fetchMenu();
+    if(menu == null){
+      return;
+    }
+
+      List<String> recipeIds = [
+        menu.ana_yemek,
+        menu.yan_yemek,
+        menu.corba,
+        menu.tatli,
+      ];
+      for (String recipeId in recipeIds) {
         await _fetchRecipeById(recipeId);
       }
-    });
   }
 
+
+  Future<Menu?> fetchMenu() async {
+    final currentDay = DateTime.now().day;
+
+    try {
+      // Attempting to retrieve the document with the ID equal to the day of the month
+      final menuSnapshot =
+      await FirebaseFirestore.instance.collection('new_menu')
+          .doc(currentDay.toString())
+          .get();
+      final menu = Menu.fromDocument(menuSnapshot);
+      return menu;
+    } catch (e) {
+      print('Failed to fetch menu.dart for day $currentDay. Trying fallback.');
+      try {
+        final fallbackSnapshot =
+        await FirebaseFirestore.instance.collection('new_menu')
+            .doc('0')
+            .get();
+
+        final fallbackMenu = Menu.fromDocument(fallbackSnapshot);
+        return fallbackMenu;
+
+      } catch (fallbackError) {
+        // If both attempts fail, we have a true coding conundrum
+        print('No luck with the fallback either. Something is amiss.');
+
+        // Handle the situation as you see fit. Perhaps a default menu.dart?
+        return null; // or return a default menu.dart
+      }
+    }
+  }
+  Future<void> fetchDocument() async {
+    int dayOfMonth = DateTime.now().day;
+    CollectionReference collection = FirebaseFirestore.instance.collection('new_menu');
+    Map<String, dynamic>? data;
+    List<String> recipeIds = [];
+    DocumentSnapshot menuDocument = await collection.doc('$dayOfMonth').get();
+    if(!menuDocument.exists){
+      menuDocument = await collection.doc('0').get();
+    }
+
+    data = menuDocument.data as Map<String, dynamic>?;
+
+    recipeIds = [
+      data?['ana_yemek'],
+      data?['yan_yemek'],
+      data?['corba'],
+      data?['tatli'],
+    ];
+
+    for(var recipeId in recipeIds){
+      _fetchRecipeById(recipeId);
+    }
+
+  }
   Future<void> _fetchRecipeById(String recipeId) async {
     if (recipeId.isEmpty) {
       return;
@@ -117,10 +179,6 @@ class _MenuPageViewState extends State<MenuPageView> {
       return snapshot.docs.map((doc) => Recipe.fromDocument(doc)).toList();
     });
   }
-
-
-  CollectionReference menuCollection =
-  FirebaseFirestore.instance.collection('new_menu');
 
   @override
   Widget build(BuildContext context) {
