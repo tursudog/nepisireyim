@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:nepisireyim/models/menu.dart';
 import 'package:nepisireyim/views/recipe_card.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,7 +21,33 @@ class MenuPageView extends StatefulWidget {
 }
 
 class _MenuPageViewState extends State<MenuPageView> {
+  InterstitialAd? _interstitialAd;
   final List<Recipe> _recipes = [];
+
+  // TODO: replace this test ad unit with your own ad unit.
+  final adUnitId = "ca-app-pub-4915271596252350/2677790728";
+
+
+  /// Loads an interstitial ad.
+  void loadAd() {
+    InterstitialAd.load(
+        adUnitId: adUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          // Called when an ad is successfully received.
+          onAdLoaded: (ad) {
+            debugPrint('$ad loaded.');
+            // Keep a reference to the ad so you can show it later.
+            _interstitialAd = ad;
+            _interstitialAd?.show();
+          },
+          // Called when an ad request failed.
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('InterstitialAd failed to load: $error');
+          },
+        ));
+  }
+
 
   @override
   void initState() {
@@ -77,6 +106,7 @@ class _MenuPageViewState extends State<MenuPageView> {
       });
     }
     _getMenu();
+    loadAd();
   }
 
   Future<void> _getMenu() async {
@@ -110,7 +140,6 @@ class _MenuPageViewState extends State<MenuPageView> {
       final menu = Menu.fromDocument(menuSnapshot);
       return menu;
     } catch (e) {
-      print('Failed to fetch menu.dart for day $currentDay. Trying fallback.');
       try {
         final fallbackSnapshot =
         await FirebaseFirestore.instance.collection('new_menu')
@@ -122,7 +151,6 @@ class _MenuPageViewState extends State<MenuPageView> {
 
       } catch (fallbackError) {
         // If both attempts fail, we have a true coding conundrum
-        print('No luck with the fallback either. Something is amiss.');
 
         // Handle the situation as you see fit. Perhaps a default menu.dart?
         return null; // or return a default menu.dart
@@ -207,7 +235,6 @@ class _MenuPageViewState extends State<MenuPageView> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         selectedItemColor:  const Color(0xFF861920),
-
         onTap: (index) {
           setState(() {
             if(index == 1){
